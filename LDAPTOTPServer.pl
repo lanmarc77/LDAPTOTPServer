@@ -9,7 +9,7 @@ use Getopt::Std;
 
 
 my %cmd_options=();
-getopts('p:t:D:d:c',\%cmd_options);
+getopts('p:t:D:d:c:l',\%cmd_options);
 
 my $file="";
 my $tmp_dir="";
@@ -51,6 +51,8 @@ if(exists($cmd_options{'c'})){
     print "\t\tdirectory where temporarily session files are stored (mandatory)\n";
     print "\t-c\n";
     print "\t\tcreate a new password entry\n";
+    print "\t-l ip\n";
+    print "\t\twhich ip to bind to\n";
     print "\t-D\n";
     print "\t\trun as daemon\n";
     print "\t-d\n";
@@ -72,10 +74,15 @@ if(exists($cmd_options{'c'})){
 exit 0;
 
 sub start_serving{
+    my $l="127.0.0.1";
+    if(exists($cmd_options{'l'})){
+	$l=$cmd_options{'l'};
+    }
     my $sock = IO::Socket::INET->new(
 	Listen => 5,
 	Proto => 'tcp',
 	Reuse => 1,
+	LocalAddr => $l,
 	LocalPort => 389
     )||die("Could not create listening server");
     my $sel = IO::Select->new($sock);
