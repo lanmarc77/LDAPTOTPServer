@@ -16,10 +16,10 @@ following requests with the first given TOTP token and allows access as long as 
 time frame (session timeout).
 
 # Web Server configuration example
-Apache2:
+## Apache2:
 Make sure the mod_authnz_ldap module is loaded.
 Add the following to your configuration to switch to LDAP authentication:
-
+...
 <Location /test>
     Order allow,deny
     Allow from all
@@ -29,25 +29,26 @@ Add the following to your configuration to switch to LDAP authentication:
     Require valid-user
     AuthName "TOTP protected area"
 </Location>
+...
 
-Lighttp:
+## Lighttp:
 Make sure the mod_auth module is loaded and loaded befroe the mod_fastcgi module (if you enabled it).
 Add the following to your configuration to switch to LDAP authentication:
-
+...
 auth.backend                 = "ldap"
 auth.backend.ldap.hostname   = "127.0.0.1"
 auth.backend.ldap.base-dn    = "ou=marcel.dyn.myiq.de"
 auth.backend.ldap.filter     = "(uid=$)"
-
+...
 Follow the usual steps of defining password protected areas based on the online documentation.
 
 
-Nginx:
+## Nginx:
 Is not directly supported. It does have an http auth module that allows a sub request to ask another
 web server if the given credentials are ok. One could (later) write a small script to make that translation
 but it is also possible to simply use a Lighttpd installation for this which can be configured to use LDAP.
 For the location /private defined in Nginx this could look like this (Lighttpd running on 192.168.1.2):
-
+...
 location /private/ {
     auth_request /auth;
 }
@@ -57,5 +58,4 @@ location = /auth {
     proxy_set_header Content-Length "";
     proxy_set_header X-Original-URI $request_uri;
 }
-
-
+...
