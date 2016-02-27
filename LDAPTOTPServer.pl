@@ -9,7 +9,7 @@ use Getopt::Std;
 
 
 my %cmd_options=();
-getopts('p:t:D:d:c:l',\%cmd_options);
+getopts('p:t:Ddcl:',\%cmd_options);
 
 my $file="";
 my $tmp_dir="";
