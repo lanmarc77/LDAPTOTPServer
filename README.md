@@ -39,7 +39,7 @@ Add the following to your configuration to switch to LDAP authentication:
 
 auth.backend                 = "ldap"
 auth.backend.ldap.hostname   = "127.0.0.1"
-auth.backend.ldap.base-dn    = "ou=marcel.dyn.myiq.de"
+auth.backend.ldap.base-dn    = "ou=whatever.this.server.de"
 auth.backend.ldap.filter     = "(uid=$)"
 ```
 
